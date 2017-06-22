@@ -1,0 +1,30 @@
+Language used: C++
+
+1.userSimilarity.cpp: Calculate the similarity between eveey pair of users using Pearson correlation and stores the similarity in userSimilarity.txt 
+
+	Pearson correlation function: Refer to image
+		Similarity btwn users A and B, movies I rated by both A and B:
+		num = Sum(i)[(rat(A,i) - avg(rat(A))) * (rat(B,i) - avg(rat(B)))]
+		den = sqrt( Sum(i)[ sq(rat(A,i) - avg(rat(A)) ] ) * sqrt( Sum(i)[ sq(rat(B,i) - avg(rat(B)) ] )
+
+	Rating prediction: Image
+
+	Data structures:
+		-> map<int,  vector< pair<int,float>>> ratings:  A mapping corresponding to each user the list of movies rated by him and their ratings
+		-> map< int, string > itemDetails: itemDetails[itemId].[itemName], item refers to movies
+		-> userSimilarity[1000][1000]: similarity between objects(users) i and j.
+
+	Improvements:
+		-> used a 1000x2000 input matrix for storing rating[user][item], no need, same data can be extracted from the ratings map. However this would have increased the time when we need for 2 users the common set of movies rated by both. But even on imdb each user on avg has less than 100 movies rated. So even a logn search when n is 100 wud not have been significant. 
+		-> Some form of normalization: pearson correlation has a drawback of giving high values when no of common objects is few, thats y multiplied the end similarity with min(50, common)/50
+		-> all three programs contain the same getData() function to read from files, that could have been put into one .h file.
+
+
+2.topNeighbours.cpp: Calculates the top neighbours of each user and stores the top 30 of each user in the text file topNeighbours.txt
+	each user has a vector of most similar users and their similarity
+
+3. recommend.cpp: Our main program, this acts on the availaible user similarities found through another program and predicts movie ratings for each user and 10000 movies. Finally it gives the mean average error by comparing the predicted and the original value of the ratings.
+
+	Then asks the user to rate a set of 10-20 movies. Based on those ratings it finds the similarity to each of the users, then takes the top 300 most similar users and then predicts a rating for each of the movies. Then displays the top 30 movies.
+
+
